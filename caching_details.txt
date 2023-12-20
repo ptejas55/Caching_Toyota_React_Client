@@ -1,0 +1,28 @@
+In the provided example, you can confirm that additional network requests are not being made by observing the network traffic in your browser's developer tools. Here's how you can check:
+
+Open Developer Tools:
+
+Open your web browser.
+Right-click on the page and select "Inspect" or "Inspect Element."
+Navigate to the "Network" tab in the developer tools.
+Check Network Requests:
+
+When you load the React app (run npm start and open the app in your browser), you should see a network request for the initial GraphQL query (GetUsers) to fetch the list of users.
+If you perform the "Add User" action by clicking the button in the app, observe the network tab again. If additional network requests are made for the same GraphQL query (GetUsers), it indicates that the cache is not working as expected.
+Expected Behavior:
+
+In a well-configured Apollo Client setup with InMemoryCache, after the initial network request, subsequent requests for the same data (e.g., repeated executions of the GetUsers query) should be served from the cache without making additional network requests.
+Apollo Client automatically checks its cache before making a network request, and if the data is available in the cache, it uses the cached data.
+Console Logs:
+
+You can also use console logs to check whether the network request is being made. Add console.log statements in your React components or in the Apollo Client configuration to log messages to the console.
+For example, you can log a message in the useQuery hook's onCompleted callback to see when the query is successfully completed.
+Here's an updated version of the useQuery hook in src/App.js with a console log:
+
+  const { loading, error, data } = useQuery(GET_USERS, {
+  onCompleted: () => {
+    console.log('Query completed:', data);
+  },
+});
+
+By observing the network tab and checking the console logs, you can determine whether the cache is working correctly and preventing unnecessary network requests.
